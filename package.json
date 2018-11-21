@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/Ajitesh-Tiwari/exxt#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "commander": "^2.19.0",
-    "inquirer": "^6.2.0"
+    "jsdom": "^13.0.0",
+    "wgxpath": "^1.2.0"
   }
 }
