@@ -1,0 +1,27 @@
+{
+  "name": "exxt",
+  "version": "1.0.0",
+  "description": "A command-line utility for information on file extension.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ajitesh-Tiwari/exxt.git"
+  },
+  "keywords": [
+    "node",
+    "commander",
+    "cmd",
+    "linux",
+    "shell",
+    "bash"
+  ],
+  "author": "Ajitesh Tiwari & Manish Chaurasiya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ajitesh-Tiwari/exxt/issues"
+  },
+  "homepage": "https://github.com/Ajitesh-Tiwari/exxt#readme"
+}
