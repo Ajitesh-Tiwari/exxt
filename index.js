@@ -1,8 +1,9 @@
 const program = require('commander');
 const axios = require('axios');
-const jsdom = require("jsdom");
+const cheerio = require("cheerio");
+const ora = require('ora');
 
-const {JSDOM} = jsdom;
+const spinner = ora('Loading').start();
 
 program
     .version('1.0.0')
@@ -12,10 +13,14 @@ program
     .command('exxt <extension>')
     .description('A command-line utility for information on file extension.')
     .action((extension) => {
-
+        spinner.start();
         axios.get('https://fileinfo.com/extension/' + extension)
             .then(function (response) {
-                console.log(getElementByXpath(response.data, '//*[@id="left"]/article/h1/span'));
+                spinner.stop();
+                console.log('Name : ' + getName(response.data));
+                console.log('Description : ' + getDesc(response.data));
+                console.log('Reference : https://fileinfo.com/extension/' + extension);
+                console.log('Powered by : fileinfo.com');
             })
             .catch(function (error) {
                 console.log(error);
@@ -23,9 +28,16 @@ program
     });
 
 
-function getElementByXpath(document, path) {
-    const window = new JSDOM(document.body).window;
-    return window.document.evaluate(path, window.document.documentElement, null, window.XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.textContent;
+function getName(document) {
+    const $ = cheerio.load(document);
+    const type = $("section.ext > h2:nth-child(1) > span:nth-child(2)");
+    return type.html();
+}
+
+function getDesc(document) {
+    const $ = cheerio.load(document);
+    const desc = $("div.infoBox > p > span");
+    return desc.html();
 }
 
 program.parse(process.argv);
