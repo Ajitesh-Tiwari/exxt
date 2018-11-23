@@ -18,27 +18,27 @@ program
 program.parse(process.argv);
 
 if (typeof extensionToBeSearched === 'undefined') {
-  console.error('Please provide extension name.');
-  process.exit(1);
+    console.error('Please provide extension name.');
+    process.exit(1);
 }
 
 function getExtensionInfo(extension) {
-  spinner.start();
-  axios.get('https://fileinfo.com/extension/' + extension)
-      .then(function (response) {
-          spinner.stop();
-          console.log('Name : ' + getName(response.data));
-          console.log('Description : ' + getDesc(response.data));
-          console.log('Reference : https://fileinfo.com/extension/' + extension);
-          console.log('Powered by : fileinfo.com');
-      })
-      .catch(function (error) {
-          spinner.stop();
-          if(error.response.status === 404)
-              console.log('Extension not found.');
-          else
-            console.log('Something went wrong : ' + error.response.status);
-      });
+    spinner.start();
+    axios.get('https://fileinfo.com/extension/' + extension.split('.').pop())
+        .then(function (response) {
+            spinner.stop();
+            console.log('Name : ' + getName(response.data));
+            console.log('Description : ' + getDesc(response.data));
+            console.log('Reference : https://fileinfo.com/extension/' + extension);
+            console.log('Powered by : fileinfo.com');
+        })
+        .catch(function (error) {
+            spinner.stop();
+            if (error.response.status === 404)
+                console.log('Extension not found.');
+            else
+                console.log('Something went wrong : ' + error.response.status);
+        });
 }
 
 function getName(document) {
