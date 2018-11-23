@@ -4,25 +4,25 @@ const program = require('commander');
 const axios = require('axios');
 const cheerio = require("cheerio");
 const ora = require('ora');
+const spinner = ora('Loading');
 
 program
     .version('1.0.0')
     .arguments('<extension>')
     .description('A command-line utility for information on file extension.')
     .action((extension) => {
-        extensionToBeSearched = extension      // required it for handling no arguments paased case
+        extensionToBeSearched = extension;  // required it for handling no arguments passed case
         getExtensionInfo(extension)
     });
 
 program.parse(process.argv);
 
-if (typeof extensionToBeSearched == 'undefined') {
-  console.error('No Extension Given!');
+if (typeof extensionToBeSearched === 'undefined') {
+  console.error('Please provide extension name.');
   process.exit(1);
 }
 
 function getExtensionInfo(extension) {
-  const spinner = ora('Loading').start();
   spinner.start();
   axios.get('https://fileinfo.com/extension/' + extension)
       .then(function (response) {
@@ -33,7 +33,11 @@ function getExtensionInfo(extension) {
           console.log('Powered by : fileinfo.com');
       })
       .catch(function (error) {
-          console.log(error);
+          spinner.stop();
+          if(error.response.status === 404)
+              console.log('Extension not found.');
+          else
+            console.log('Something went wrong : ' + error.response.status);
       });
 }
 
