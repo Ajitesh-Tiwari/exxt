@@ -1,6 +1,6 @@
 {
   "name": "exxt",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A command-line utility for information on file extension.",
   "main": "index.js",
   "scripts": {

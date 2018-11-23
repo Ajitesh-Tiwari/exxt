@@ -29,7 +29,7 @@ function getExtensionInfo(extension) {
             spinner.stop();
             console.log('Name : ' + getName(response.data));
             console.log('Description : ' + getDesc(response.data));
-            console.log('Reference : https://fileinfo.com/extension/' + extension);
+            console.log('Reference : https://fileinfo.com/extension/' + extension.split('.').pop());
             console.log('Powered by : fileinfo.com');
         })
         .catch(function (error) {
