@@ -1,32 +1,41 @@
+#!/usr/bin/env node
+
 const program = require('commander');
 const axios = require('axios');
 const cheerio = require("cheerio");
 const ora = require('ora');
 
-const spinner = ora('Loading').start();
-
 program
     .version('1.0.0')
-    .description('A command-line utility for information on file extension.');
-
-program
-    .command('exxt <extension>')
+    .arguments('<extension>')
     .description('A command-line utility for information on file extension.')
     .action((extension) => {
-        spinner.start();
-        axios.get('https://fileinfo.com/extension/' + extension)
-            .then(function (response) {
-                spinner.stop();
-                console.log('Name : ' + getName(response.data));
-                console.log('Description : ' + getDesc(response.data));
-                console.log('Reference : https://fileinfo.com/extension/' + extension);
-                console.log('Powered by : fileinfo.com');
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        extensionToBeSearched = extension      // required it for handling no arguments paased case
+        getExtensionInfo(extension)
     });
 
+program.parse(process.argv);
+
+if (typeof extensionToBeSearched == 'undefined') {
+  console.error('No Extension Given!');
+  process.exit(1);
+}
+
+function getExtensionInfo(extension) {
+  const spinner = ora('Loading').start();
+  spinner.start();
+  axios.get('https://fileinfo.com/extension/' + extension)
+      .then(function (response) {
+          spinner.stop();
+          console.log('Name : ' + getName(response.data));
+          console.log('Description : ' + getDesc(response.data));
+          console.log('Reference : https://fileinfo.com/extension/' + extension);
+          console.log('Powered by : fileinfo.com');
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+}
 
 function getName(document) {
     const $ = cheerio.load(document);
@@ -39,5 +48,3 @@ function getDesc(document) {
     const desc = $("div.infoBox > p > span");
     return desc.html();
 }
-
-program.parse(process.argv);
